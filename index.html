@@ -1,0 +1,226 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <link rel="stylesheet" href="reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="reveal.js/css/theme/sky.css">
+    <style>
+      pre, ol, ul {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>React.js dla początkujących</h2>
+          <h4>20 Maj, 2018</h4>
+          <h3>WarsawJS Workshop #20</h3>
+        </section>
+
+        <section>
+          <h3>Agenda</h3>
+          <ol>
+            <li>Parę słów o trenerach</li>
+            <li>Krótkie wprowadzenie do React.js</li>
+            <li>Wprowadzenie do projektu</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Wprowadzenie do React.js</h2>
+          <ol>
+            <li>HelloWorld</li>
+            <li>Komponenty</li>
+            <li>JSX</li>
+            <li>Props a state</li>  
+            <li>Cykl życia</li>
+            <li>Formularze</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Hello World</h2>
+          <pre>
+            <code data-trim data-noescape>
+  // HelloWorld.js
+  import React, { Component } from 'react';
+
+  class HelloWorld extends Component {
+    render() {
+      return &lt;div&gt;Hello, world&lt;/div&gt;;
+    }
+  }
+
+  React.render(
+    &lt;HelloWorld /&gt;,
+    document.querySelector('#root')
+  );
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h2>Hello World</h2>
+          <ul>
+            <li>Interfejs składa się z komponentów</li>
+            <li>Komponenty można zagnieżdżać</li>
+            <li>Komponenty można reużywać</li>
+            <li>React oferuje komponenty dla standardowych znaczników HTML5</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Komponenty - 1</h2>
+          <ul>
+            <li>Jest klasa ES6 która dziedziczy po React.Component</li>
+            <li>Powinna posiadać metodę render()</li>
+            <li>render() powinno zwrócić reprezentację komponentu</li>
+            <li>Ten niby-HTML w JavaScript to JSX</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Komponenty - 2</h2>
+          <ul>
+            <li>Jest klasa ES6 która dziedziczy po React.Component</li>
+            <li>Powinna posiadać metodę render()</li>
+            <li>render() powinno zwrócić reprezentację komponentu</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>JSX, czyli HTML w JS</h2>
+          <pre>
+            <code data-trim data-noescape>
+  // element natywny
+  &lt;div&gt;Hello, world&lt;/div&gt;
+  &lt;HelloWorld /&gt;
+
+  // props-y
+  &lt;div
+    className=&quot;some-class&quot;
+    onClick={this.handleClick}
+    {...rest}
+  &gt;
+    Hello, world {isExcited ? '!!!' : '...'}
+  &lt;/div&gt;;
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h2>Props a state</h2>
+          <ul>
+            <li>Props to parametry przekazywane komponentowi z zewnątrz</li>
+            <li>Props-y należy traktować jako niezmienne</li>
+            <li>Do props-ów można się odwołać za pomocą this.props</li>
+            <li>Przykłady - kolor przyciska, callback-i itd.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Props a state - c.d.</h2>
+          <ul>
+            <li>W stanie trzymamy wewnętrzne zmienne komponenta, które wpływają na jego prezentację</li>
+            <li>Stan zmieniamy za pomocą funkcji this.setState()</li>
+            <li>(domyślnie) komponent rerenderuje się po każdej zmianie props-ów lub stanu</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Cykl życia</h2>
+          <ul>
+            <li>unmounted - obiekt istnieje, ale nie jest powiązany z DOM-em</li>
+            <li>mounting - komponent jest w trakcie powiązania z DOM-em</li>
+            <li>mounted - komponent ma swoją reprezentację w DOM</li>
+            <li>unmounting - komponent jest usuwany z DOM i drzewa komponentów</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Cykl życia</h2>
+          <img src="lifecycle.png" />
+        </section>
+
+        <section>
+          <h2>Formularze</h2>
+          <ul>
+            <li>Kontrolki formularzy mogą działać w dwóch trybach</li>
+            <li>W trybie kontrolowanym wartość kontrolki oraz callback do jej zmiany
+              są przekazywane jako props-y</li>
+            <li>W trybie niekontrolowanym wartości pobieramy za pomocą tzw. ref-ów czyli
+              referencji do natywnych kontrolek</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Tryb kontrolowany</h2>
+          <pre>
+            <code data-trim data-noescape>
+  // HelloWorld.js
+  &lt;input
+    type=&quot;text&quot;
+    value={this.props.inputValue}
+    onChange={this.props.handleInputChange}
+  /&gt;
+
+  handleInputChange = (event) => {
+    // informujemy nadrzędny komponent o zmianie
+    this.props.onInputChange(event.target.value);
+  };  
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h2>Tryb niekontrolowany</h2>
+          <pre>
+            <code data-trim data-noescape>
+  // HelloWorld.js
+  &lt;input
+    type=&quot;text&quot;
+    ref={this.setInputRef}
+  /&gt;
+
+  handleSubmitForm = (event) => {
+    event.preventDefault();
+    doSomeApiCall({
+      input: this.inputRef.value
+    });
+  };  
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h2>Krótkie wprowadzenie do projektu</h2>
+          <ul>
+            <li>FlightSearch</li>
+            <li>Jest to wyszukiwarka lotów (podobnie jak https://www.skyscanner.pl/)</li>
+            <li>Widok z formularzem do wprowadzenia kryteriów wyszukiwania</li>
+            <li>Widok do wyświetlania listy lotów oraz filtrowania wyników</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Dane, API </h2>
+          <ul>
+            <li>https://warsawjs-flights-api.herokuapp.com</li>
+            <li>GET /airports - pobieranie listy lotnisk</li>
+            <li>GET /flights/:from/:to/:depart/:return - wyszukiwanie lotów</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Dziękuję !</h1>
+        </section>
+      </div>
+    </div>
+    <script src="reveal.js/js/reveal.js"></script>
+    <script>
+      Reveal.initialize();
+    </script>
+    <script src="reveal.js/plugin/highlight/highlight.js"></scripts>
+  </body>
+</html>
